@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        div {
+            margin: 10px 0;
+        }
+
+        input[type="number"],
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            box-sizing: border-box;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            width: 200px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <form action="./data.php" method="get" id="caculate">
+        <div>
+            <input type="number" name="num1" id="num1" value="100">
+        </div>
+        <div>
+            <select name="opt" id="opt">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+        </div>
+        <div>
+            <input type="number" name="num2" id="num2" value="50">
+        </div>
+        <button type="submit">計算</button>
+    </form>
+
+    <div class="result">
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            // bind
+            const num1 = $('#num1').val();
+            const num2 = $('#num2').val();
+            const opt = $('#opt').val();
+            const caculate =$('#caculate'); 
+            const result =$('.result'); 
+            // action
+            
+            
+            caculate.submit(function(e) {
+                let url = './data.php';
+                let data = $(this).serializeArray();
+                console.log('data', data);
+                e.preventDefault();
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: data,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('response', response);
+                        result.text(response.result);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
