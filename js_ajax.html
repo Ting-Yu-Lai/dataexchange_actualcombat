@@ -1,117 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
 
-        div {
-            margin: 10px 0;
-        }
+      .container {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 320px;
+        box-sizing: border-box;
+        text-align: center;
+      }
 
-        input[type="number"],
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 200px;
-            box-sizing: border-box;
-        }
+      form#calcForm div {
+        margin-bottom: 20px;
+      }
 
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        }
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+      }
 
-        select {
-            cursor: pointer;
-        }
+      input[type="number"]:focus,
+      select:focus {
+        border-color: #2575fc;
+        box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+        outline: none;
+      }
 
-        .result {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-            padding: 10px;
-            background-color: white;
-            border-radius: 4px;
-            width: 200px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+      button[type="submit"] {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 18px;
+        background-color: #2575fc;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        box-shadow: 0 6px 12px rgba(37, 117, 252, 0.6);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #1a52d1;
+        box-shadow: 0 8px 16px rgba(26, 82, 209, 0.7);
+      }
+
+      .result {
+        margin-top: 30px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
+        width: 100%;
+        box-sizing: border-box;
+        word-wrap: break-word;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <body>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-
-    <form action="./data.php" method="get" id="caculate">
+    <div class="container">
+      <form id="caculate">
         <div>
-            <input type="number" name="num1" id="num1" value="100">
+          <input type="number" name="num1" id="num1" value="100" />
         </div>
         <div>
-            <select name="opt" id="opt">
-                <option value="+">+</option>
-                <option value="-">-</option>
-                <option value="*">*</option>
-                <option value="/">/</option>
-            </select>
+          <select name="opt" id="opt">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+          </select>
         </div>
         <div>
-            <input type="number" name="num2" id="num2" value="50">
+          <input type="number" name="num2" id="num2" value="50" />
         </div>
         <button type="submit">計算</button>
-    </form>
+      </form>
 
-    <div class="result">
+      <div class="result"></div>
     </div>
 
-
     <script>
-        $(document).ready(function() {
-            // bind
-            const num1 = $('#num1').val();
-            const num2 = $('#num2').val();
-            const opt = $('#opt').val();
-            const caculate =$('#caculate'); 
-            const result =$('.result'); 
-            // action
-            
-            
-            caculate.submit(function(e) {
-                let url = './data.php';
-                let data = $(this).serializeArray();
-                console.log('data', data);
-                e.preventDefault();
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    data: data,
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log('response', response);
-                        result.text(response.result);
-                    }
-                });
-            });
-        });
-    </script>
-</body>
+      $(document).ready(function () {
+        // bind
+        const num1 = $("#num1").val();
+        const num2 = $("#num2").val();
+        const opt = $("#opt").val();
+        const caculate = $("#caculate");
+        const result = $(".result");
+        // action
 
+        caculate.submit(function (e) {
+          let url = "./data.php";
+          let data = $(this).serializeArray();
+          console.log("data", data);
+          e.preventDefault();
+          $.ajax({
+            type: "get",
+            url: url,
+            data: data,
+            dataType: "json",
+            success: function (response) {
+              console.log("response", response);
+              result.text(response.result);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
